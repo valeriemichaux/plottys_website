@@ -1,0 +1,25 @@
+---
+title: "TidyTuesday_Plastics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r, Datensatz laden}
+
+plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-26/plastics.csv')
+
+#Idee: Grand Total per country berechnen > Top10-20 Länder identifizieren
+
+plastics %>%
+  filter(year == 2020) -> plastics2020
+
+plastics2020 %>%
+  group_by(country = "Argentina") -> plastic_grouped
+
+plastics2020 %>% count(country)
+```
+
