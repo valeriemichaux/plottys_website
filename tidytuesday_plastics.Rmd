@@ -24,7 +24,7 @@ plastics %>%
 plastics %>%
   filter(year == 2019) %>%
   filter(parent_company != "Grand Total")-> plastics2019
-# in 2020 gibt es für jedes(?) Land einen Eintragmit NULL oder null > rausgefiltert, ich bin mir unsicher, was dieser Eintrag sein soll, ich glaube das Grand total als Zeile pro Land? Bei den 2019er Daten gibt es das nicht, aber dafür pro Country eine Zeile mit null
+# in 2020 gibt es für jedes(?) Land einen Eintrag mit NULL oder null > rausgefiltert, ich bin mir unsicher, was dieser Eintrag sein soll, ich glaube das Grand total als Zeile pro Land? Bei den 2019er Daten gibt es das nicht, aber dafür pro Country eine Zeile mit null
 
 # Berechnung grand_total per Country
 plastics2020 %>%
