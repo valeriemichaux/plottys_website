@@ -8,18 +8,39 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
+Einstiegsidee
+```{r}
+
+Einstiegsidee %>%
+  ggplot(aes(Woche, Gramm)) +
+  geom_point(colour= "blue", size = 6) +
+  scale_y_continuous(limits = c(0, 300))+
+  geom_smooth(method = "lm", colour= "grey")+
+  labs(title = "Durchschnittliche Plastik-Aufnahme eines Menschen", subtitle = "Mikroplastik (in Gramm) pro Woche") +
+  annotate(geom = "text", label= "Kreditkarte", x= 5.5, y= 4)+ 
+  annotate(geom= "text", label= "fünf Bleistifte", x= 9, y= 23) +
+  annotate(geom= "text", label= "Pckg. Butter", x= 51,y= 240) +
+  theme_test() 
+  ggsave(filename = "Einstiegsidee.png")
+```
+
 ```{r, Datensatz laden}
 
 plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-26/plastics.csv')
 
 #Idee: Grand Total per country berechnen > Top10-20 Länder identifizieren
 
+#plastics %>%
+ # filter(year == 2020) -> plastics2020
+
+#plastics2020 %>%
+ # group_by(country = "Argentina") -> plastic_grouped
+
+#na.omit(plastics2020$grand_total) %>%
+ # sum(plastics2020$grand_total) -> Summe
+  
 plastics %>%
-  filter(year == 2020) -> plastics2020
+  filter(country == "Germany")
 
-plastics2020 %>%
-  group_by(country = "Argentina") -> plastic_grouped
-
-plastics2020 %>% count(country)
 ```
 
