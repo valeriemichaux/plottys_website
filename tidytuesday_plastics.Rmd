@@ -6,23 +6,31 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(fs)
+library(dplyr)
 ```
 
-Einstiegsidee
 ```{r}
+Woche <- c(1, 4, 52)
+Gramm <- c(5,20,260)
+Einstieg <- tibble(Woche, Gramm)
+```
 
-Einstiegsidee %>%
+#Einstiegsidee
+```{r}
+Einstieg %>%
   ggplot(aes(Woche, Gramm)) +
   geom_point(colour= "blue", size = 6) +
-  scale_y_continuous(limits = c(0, 300))+
-  geom_smooth(method = "lm", colour= "grey")+
+  scale_y_continuous(limits = c(0, 300)) +
+  geom_smooth(method = "lm", colour= "grey") +
   labs(title = "Durchschnittliche Plastik-Aufnahme eines Menschen", subtitle = "Mikroplastik (in Gramm) pro Woche") +
-  annotate(geom = "text", label= "Kreditkarte", x= 5.5, y= 4)+ 
-  annotate(geom= "text", label= "fünf Bleistifte", x= 9, y= 23) +
-  annotate(geom= "text", label= "Pckg. Butter", x= 51,y= 240) +
+    annotate(geom = "text", label= "Kreditkarte", x= 5.5, y= 4)+ 
+    annotate(geom= "text", label= "fünf Bleistifte", x= 9, y= 23) +
+    annotate(geom= "text", label= "Pckg. Butter", x= 51,y= 240) +
   theme_test() 
   ggsave(filename = "Einstiegsidee.png")
 ```
+
 
 ```{r, Datensatz laden}
 
@@ -41,6 +49,36 @@ plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/t
   
 plastics %>%
   filter(country == "Germany")
+
+plastics %>%
+  filter(year == 2020) %>%
+  filter(parent_company != "NULL", parent_company != "null")-> plastics2020
+# in 2020 gibt es für jedes(?) Land einen Eintragmit NULL oder null > rausgefiltert, ich bin mir unsicher, was dieser Eintrag sein soll, ich glaube das Grand total als Zeile pro Land? Bei den 2019er Daten gibt es das nicht, aber dafür pro Country eine Zeile mit null
+
+plastics %>%
+  filter(year == 2019) %>%
+  filter(parent_company != "Grand Total")-> plastics2019
+# in 2020 gibt es für jedes(?) Land einen Eintrag mit NULL oder null > rausgefiltert, ich bin mir unsicher, was dieser Eintrag sein soll, ich glaube das Grand total als Zeile pro Land? Bei den 2019er Daten gibt es das nicht, aber dafür pro Country eine Zeile mit null
+
+# Berechnung grand_total per Country
+plastics2020 %>%
+  group_by(country) %>%
+  summarize(total_plastic_per_country = sum(grand_total)) -> plastic_per_country_2020
+
+plastics2019 %>%
+  group_by(country) %>%
+  summarize(total_plastic_per_country = sum(grand_total)) -> plastic_per_country_2019
+
+# Funktion sortiert Ländern in abstigender Reihenfolge nach grand_total
+plastic_per_country_2020 %>%
+  arrange(desc(total_plastic_per_country))
+
+# Wie kann ich alle Einträge der gleichen parent_company zusammenführen (unabhängig vom Land + Jahr)? Group_by funktioniert nicht...
+# Ich wollte im 2. Schritt die top 10 nach parent_company isolieren
+plastics2019 %>%
+  group_by(parent_company) %>%
+  top_n(10, parent_company) -> test
+
 
 ```
 
