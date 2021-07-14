@@ -10,7 +10,10 @@ library(fs)
 library(dplyr)
 ```
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1e10c843770e2aadbb864fe9227f1fb905f9cb47
 ```{r, Datensatz laden}
 
 plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-26/plastics.csv')
