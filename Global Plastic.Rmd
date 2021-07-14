@@ -40,5 +40,7 @@ waste_per_country_capita <- readr::read_csv("data/plastic-waste-per-capita.csv")
 
 #Kombinieren der beiden Datensätze mit Waste generation per country und per capita waste per country
 combi <- inner_join(waste_per_country, waste_per_country_capita)
+
+
 ```
 
