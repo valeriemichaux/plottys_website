@@ -10,27 +10,6 @@ library(fs)
 library(dplyr)
 ```
 
-```{r}
-Woche <- c(1, 4, 52)
-Gramm <- c(5,20,260)
-Einstieg <- tibble(Woche, Gramm)
-```
-
-#Einstiegsidee
-```{r}
-Einstieg %>%
-  ggplot(aes(Woche, Gramm)) +
-  geom_point(colour= "blue", size = 6) +
-  scale_y_continuous(limits = c(0, 300)) +
-  geom_smooth(method = "lm", colour= "grey") +
-  labs(title = "Durchschnittliche Plastik-Aufnahme eines Menschen", subtitle = "Mikroplastik (in Gramm) pro Woche") +
-    annotate(geom = "text", label= "Kreditkarte", x= 5.5, y= 4)+ 
-    annotate(geom= "text", label= "fünf Bleistifte", x= 9, y= 23) +
-    annotate(geom= "text", label= "Pckg. Butter", x= 51,y= 240) +
-  theme_test() 
-  ggsave(filename = "Einstiegsidee.png")
-```
-
 
 ```{r, Datensatz laden}
 
@@ -75,9 +54,12 @@ plastic_per_country_2020 %>%
 
 # Wie kann ich alle Einträge der gleichen parent_company zusammenführen (unabhängig vom Land + Jahr)? Group_by funktioniert nicht...
 # Ich wollte im 2. Schritt die top 10 nach parent_company isolieren
-plastics2019 %>%
+
+plastics %>%
+  filter(country == "Germany") %>%
   group_by(parent_company) %>%
-  top_n(10, parent_company) -> test
+  summarize(grand_total = sum(grand_total)) %>%
+  arrange(desc(grand_total))
 
 
 ```
