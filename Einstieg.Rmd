@@ -1,0 +1,36 @@
+---
+title: "Einstieg"
+author: "Caroline Kreiß"
+date: "14 7 2021"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(fs)
+library(dplyr)
+```
+
+```{r}
+Woche <- c (1:52)
+Gramm <- c(seq(5, 260, length.out = 52))
+
+Einstieg <- tibble(Woche, Gramm)
+```
+
+#Einstiegsidee
+```{r}
+Einstieg %>%
+  ggplot(aes(Woche, Gramm)) +
+  geom_point(colour= "blue", size = 1) +
+    scale_y_continuous(limits = c(0, 300)) +
+    scale_x_continuous(breaks=c(1,4,25, 52)) +
+  #geom_smooth(method = "lm", colour= "grey") +
+  labs(title = "Durchschnittliche Aufnahme von Plastik pro Person", subtitle = "Mikroplastik (in Gramm) pro Woche entspricht...") +
+   annotate(geom = "text", label= "Kreditkarte", x= 4.5, y= 4) + 
+   annotate(geom= "text", label= "fünf Bleistifte", x= 7, y= 23) +
+   annotate(geom= "text", label= "Butter", x= 53,y= 240) +
+    theme_test() 
+  
+  ggsave(filename = "Einstiegsidee.png")
+```
