@@ -13,11 +13,12 @@ library(cowplot)
 library(gganimate)
 options(gganimate.nframes = 30)
 library(gifski)
+library(plotly)
+library(ggiraph)
 ```
 
-```{r}
+```{r, Grafik 1 - Entwicklung der weltweiten Plastikproduktion}
 
-# Plot zur Entwicklung der globalen Plastikproduktion
 # Fine-Tuning muss noch gemacht werden
 # Plott so an sich zu langweilig? Können wir noch andere Date hier verknüpfen? 
 # Gibt es eine Möglichkeit die lineare und die kumultaive ENtwicklung in einem Plot dazustellen?
@@ -28,12 +29,56 @@ global_plastic %>% rename(gpp = `Global plastics production (million tonnes)`) -
 
 global_plastic %>%
  mutate(gpp = as.numeric(gpp)/1000000) %>%
-ggplot(aes(x = Year, y = gpp )) + geom_point() + geom_line() +
+ggplot(aes(x = Year, y = gpp )) + geom_line(alpha = 0.5) + geom_point_interactive(aes(tooltip = gpp), color = '#00868B') +
   scale_x_continuous(limits = c(1950, 2015), breaks = c(1950, 1960, 1970, 1980, 1990, 2000, 2010, 2015), expand = c(0.02,0.02)) +
   scale_y_continuous(limits = c(0, 400), breaks = c(0, 50, 100, 150, 200, 250, 300, 350, 400), expand = c(0,0)) +
   labs(x = "", y = "global plastic production in million tonnes", title = "Development of the global plastic production from 1950 to 2015") +
-  theme_minimal_hgrid(12)
+  theme_minimal_hgrid(12) -> plot_global_plastic
+
+girafe(
+  ggobj = plot_global_plastic,
+  width_svg = 7,
+  height_svg = 7*0.618,
+    options = list(
+    opts_tooltip(css = "background: #F5F5F5; color: #000000;")))
+
+
+#2. Versuch interaktive Grafik mit Hover-Text
+
+global_plastic %>%
+ mutate(gpp = as.numeric(gpp)/1000000) -> global_plastic2
+
+
+global_plastic2 %>%
+plot_ly(x=~Year, y=~gpp, type = "scatter", mode = "markers", hoverinfo = "text", text = paste("Year: ", global_plastic2$Year, "<br>", "Plastic in million tonnes: ", global_plastic2$gpp)) ->plot1
+
+x <- list(
+  title = "")
+y <- list(
+  title = "global plastic production in million tonnes")
+
+plot2 <- plot1 %>% layout(xaxis = x, yaxis = y)
+
+plot2
+
 ```
+```{r}
+
+cumulative_global_plastic <- readr::read_csv("data/cumulative-global-plastics.csv")
+
+cumulative_global_plastic %>%
+  rename(cgpp = `Cumulative global plastics production (million tonnes)`) %>%
+ mutate(cgpp = as.numeric(cgpp)/1000000000) %>%
+ggplot(aes(x = Year, y = cgpp )) + geom_area(fill = '#00868B') +
+  scale_x_continuous(limits = c(1950, 2015), breaks = c(1950, 1960, 1970, 1980, 1990, 2000, 2010, 2015), expand = c(0.02,0.02)) +
+  scale_y_continuous(limits = c(0, 8), breaks = c(1, 2, 3, 4, 5, 6, 7, 8), expand = c(0,0)) +
+  labs(x = "", y = "cumulative global plastic production in billion tonnes", title = "Cumulation of the global plastic production from 1950 to 2015") +
+  theme_minimal_hgrid(12) -> plot_cumulative_global_plastic
+
+
+
+```
+
 ```{r}
 waste_per_country <- readr::read_csv("data/plastic-waste-generation-total.csv")
 waste_per_country_capita <- readr::read_csv("data/plastic-waste-per-capita.csv")
