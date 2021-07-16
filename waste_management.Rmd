@@ -1,0 +1,31 @@
+---
+title: "My Website"
+description: |
+  Welcome to the website. I hope you enjoy it!
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+ 
+library(tidyverse)
+library(ggplot2)
+library(dbplyr)
+```
+
+global_plastic_fate <- readr::read_csv("data/global-plastic-fate.csv")
+
+global_plastic_fate%>%
+rename(percentage = `Estimated historic plastic fate`) -> global_plastic_fate
+
+
+global_plastic_fate%>%
+group_by(Entity)%>%
+ggplot(aes(x = Year, y = percentage, fill= Entity, color= Entity)) + 
+ geom_point()+
+ theme_minimal()
+ 
+ 

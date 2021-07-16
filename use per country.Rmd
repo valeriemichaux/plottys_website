@@ -1,0 +1,78 @@
+---
+title: "My Website"
+description: |
+  Welcome to the website. I hope you enjoy it!
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+library(dplyr)
+library(ggplot2)
+theme_set(theme_bw())
+library(devtools)
+install_github("r-spatial/sf")
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggiraph)
+```
+
+```{r}
+waste_per_country <- readr::read_csv("data/plastic-waste-generation-total.csv")
+waste_per_country_capita <- readr::read_csv("data/plastic-waste-per-capita.csv")
+
+#Kombinieren der beiden Datensätze mit Waste generation per country und per capita waste per country
+combi <- inner_join(waste_per_country, waste_per_country_capita)
+
+combi%>% 
+  rename(per_capita_kg = `Per capita plastic waste (kg/person/day)`) %>%
+  mutate(per_capita_g = per_capita_kg*1000) -> combi
+```
+```{r}
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+#world%>%
+  #ggplot+
+  #geom_sf()+
+  #theme_void()
+
+world %>% 
+ left_join(combi, by = c("gu_a3" = "Code")) -> world_plastic
+
+
+world_plastic%>%
+mutate(plastic_waste_tt = `Plastic waste generation (tonnes, total)`/ 1000)->world_plastic
+
+#es fehlen noch für sehr viele Länder die Angaben zum Plastik waset
+
+world_plastic%>% 
+  ggplot()+
+  aes(fill = plastic_waste_tt)+
+  geom_sf() 
+
+
+#Wenn man die Zeile  #coord_sf(xlim = c(1,36), ylim = c(36, 60), expand = FALSE)+ rauslöscht, dann ist es rausgezoomt und so rein 
+
+world_plastic%>% 
+  ggplot()+
+  aes(fill = plastic_waste_tt)+
+  geom_sf_interactive(aes(tooltip = plastic_waste_tt), color= "black")+
+  #coord_sf(xlim = c(1,36), ylim = c(36, 60), expand = FALSE)+
+  scale_fill_viridis_c(option = "plasma", trans = "sqrt", alpha = 0.5)+
+  labs(title = "Globale Plastikproduktion pro Land im jahr 2010")+
+  theme_void() ->plastic_map 
+
+
+ggiraph::girafe(
+  ggobj = plastic_map, pointsize = 14, width_svg = 6, height_svg = 6* 0.618)
+
+
+
+```
+
