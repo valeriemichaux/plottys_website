@@ -17,7 +17,7 @@ library(gifski)
 
 ```{r}
 
-# Plot zur ENtwicklung der globalen Plastikproduktion
+# Plot zur Entwicklung der globalen Plastikproduktion
 # Fine-Tuning muss noch gemacht werden
 # Plott so an sich zu langweilig? Können wir noch andere Date hier verknüpfen? 
 # Gibt es eine Möglichkeit die lineare und die kumultaive ENtwicklung in einem Plot dazustellen?
