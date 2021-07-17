@@ -31,11 +31,13 @@ author: "Caroline Kreiß"
 date: "14 7 2021"
 output: html_document
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r}
 library(tidyverse)
 library(fs)
 library(dplyr)
+library(dplyr)
+library(ggplot2)
 ```
 
 ```{r}
@@ -45,20 +47,35 @@ Gramm <- c(seq(5, 260, length.out = 52))
 Einstieg <- tibble(Woche, Gramm)
 ```
 
+
 #Einstiegsidee
 ```{r}
 Einstieg %>%
   ggplot(aes(Woche, Gramm)) +
-  geom_point(colour= "blue", size = 1) +
+  geom_point(colour= "blue", size = 4) +
     scale_y_continuous(limits = c(0, 300)) +
-    scale_x_continuous(breaks=c(1,4,25, 52)) +
-  #geom_smooth(method = "lm", colour= "grey") +
+    scale_x_continuous (limits = c(0,60), breaks= c(0, 1,4,25, 52, 60)) +
+  geom_smooth(method = "lm", colour= "grey") +
   labs(title = "Durchschnittliche Aufnahme von Plastik pro Person", subtitle = "Mikroplastik (in Gramm) pro Woche entspricht...") +
    annotate(geom = "text", label= "Kreditkarte", x= 4.5, y= 4) + 
    annotate(geom= "text", label= "fünf Bleistifte", x= 7, y= 23) +
+annotate(geom= "text", label= "Creme", x= 24, y= 120) +
    annotate(geom= "text", label= "Butter", x= 53,y= 240) +
     theme_test() 
   
   ggsave(filename = "Einstiegsidee.png")
 ```
->>>>>>> 1e10c843770e2aadbb864fe9227f1fb905f9cb47
+```{r}
+#Einstieg mit Highlights
+```{r}
+highlight_df <- filter(Einstieg, Gramm == "5", "20", "120", "260")
+
+Einstieg %>% 
+  ggplot(aes(x=Woche,y=Gramm)) + 
+  geom_point(alpha=0.3) +
+  geom_point(data=highlight_df, 
+             aes(x=Woche,y=Gramm), 
+             color='blue',
+             size=3)
+```
+
