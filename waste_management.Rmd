@@ -16,6 +16,8 @@ library(ggplot2)
 library(dbplyr)
 ```
 
+
+```{r}
 global_plastic_fate <- readr::read_csv("data/global-plastic-fate.csv")
 
 global_plastic_fate%>%
@@ -27,5 +29,7 @@ group_by(Entity)%>%
 ggplot(aes(x = Year, y = percentage, fill= Entity, color= Entity)) + 
  geom_point()+
  theme_minimal()
- 
+```
+
+
  
