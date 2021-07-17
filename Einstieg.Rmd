@@ -67,15 +67,25 @@ annotate(geom= "text", label= "Creme", x= 24, y= 120) +
 ```
 ```{r}
 #Einstieg mit Highlights
-```{r}
-highlight_df <- filter(Einstieg, Gramm == "5", "20", "120", "260")
 
-Einstieg %>% 
+Einstieg%>%
+hl <- c(Gramm, "5", "20", "120", "260")
+as.numeric(hl)
+
+
+Einstieg%>% 
+  mutate(Gramm = as.factor(Gramm))%>%
+  filter(Gramm == C(5, 20, 120, 260)) -> highlight_df
+
+highlight_df %>% 
   ggplot(aes(x=Woche,y=Gramm)) + 
   geom_point(alpha=0.3) +
   geom_point(data=highlight_df, 
              aes(x=Woche,y=Gramm), 
              color='blue',
              size=3)
+
+
+#Idee: geom_point und geom_line kombinieren 
 ```
 
