@@ -1,10 +1,8 @@
 name: "plottys_website"
 title: "Unsere Webseite"
-
 description: |
   Unsere Webseite
 output_dir: "_site"
-
 navbar:
   search: TRUE
   right:
@@ -13,3 +11,4 @@ navbar:
     - text: "Über uns"
       href: about.html
 output: distill::distill_article
+
