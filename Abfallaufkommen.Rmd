@@ -1,0 +1,28 @@
+---
+title: "Abfallaufkommen"
+author: "Caroline Kreiß"
+date: "20 7 2021"
+output: html_document
+---
+
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+#Umbenennung
+```{r setup, include=FALSE}
+
+Abfallaufkommen_Plastik <- Abfallaufkommen_Plastik %>%
+                      rename(Land    = 'TIME')
+
+
+```
+
+```{r}
+  Jahre <- c("2004", "2006", "2008", "2010", "2012", "2014", "2016", "2018")
+  
+```
+
