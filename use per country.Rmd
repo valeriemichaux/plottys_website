@@ -15,11 +15,12 @@ library(dplyr)
 library(ggplot2)
 theme_set(theme_bw())
 library(devtools)
-install_github("r-spatial/sf")
+#install_github("r-spatial/sf")
 library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(ggiraph)
+
 ```
 
 ```{r}
@@ -47,7 +48,7 @@ world %>%
 
 
 world_plastic%>%
-mutate(plastic_waste_tt = `Plastic waste generation (tonnes, total)`/ 1000)->world_plastic
+mutate(plastic_waste_tt = `Plastic waste generation (tonnes, total)`/ 1000)-> world_plastic
 
 #es fehlen noch für sehr viele Länder die Angaben zum Plastik waset
 
@@ -63,14 +64,15 @@ world_plastic%>%
   ggplot()+
   aes(fill = plastic_waste_tt)+
   geom_sf_interactive(aes(tooltip = plastic_waste_tt), color= "black")+
-  #coord_sf(xlim = c(1,36), ylim = c(36, 60), expand = FALSE)+
   scale_fill_viridis_c(option = "plasma", trans = "sqrt", alpha = 0.5)+
+  labs(fill="Plastikproduktion in tausend Tonnen")+
   labs(title = "Globale Plastikproduktion pro Land im jahr 2010")+
   theme_void() ->plastic_map 
 
 
 ggiraph::girafe(
-  ggobj = plastic_map, pointsize = 14, width_svg = 6, height_svg = 6* 0.618)
+  ggobj = plastic_map, pointsize = 14, width_svg = 6, height_svg = 6* 0.618
+  )
 
 
 
