@@ -67,6 +67,9 @@ world_plastic%>%
   scale_fill_viridis_c(option = "plasma", trans = "sqrt", alpha = 0.5)+
   labs(fill="Plastikproduktion in tausend Tonnen")+
   labs(title = "Globale Plastikproduktion pro Land im jahr 2010")+
+  scale_fill_viridis_b(option = "plasma", trans = "sqrt", alpha = 0.5)+
+  theme(legend.position = "top")+
+  labs(title = "Globale Plastikproduktion pro Land im Jahr 2010")+
   theme_void() ->plastic_map 
 
 
@@ -74,7 +77,24 @@ ggiraph::girafe(
   ggobj = plastic_map, pointsize = 14, width_svg = 6, height_svg = 6* 0.618
   )
 
+```
+
+#Fokus auf Europa
+```{r}
+world_plastic%>% 
+  ggplot()+
+  aes(fill = plastic_waste_tt)+
+  geom_sf_interactive(aes(tooltip = plastic_waste_tt), color= "black")+
+  coord_sf(xlim = c(-10, +36), ylim = c(30, 65), expand = FALSE)+
+  labs(fill="Plastikproduktion in tausend Tonnen")+
+  scale_fill_viridis_b(option = "plasma", trans = "sqrt", alpha = 0.5)+
+  labs(title = "Globale Plastikproduktion pro Land im Jahr 2010")+
+  theme_void() ->plastic_map 
 
 
+ggiraph::girafe(
+  ggobj = plastic_map, pointsize = 14, width_svg = 6, height_svg = 6* 0.618)
+
+```
 ```
 

@@ -16,10 +16,9 @@ library(ggplot2)
 library(dbplyr)
 ```
 
+
 ```{r}
 global_plastic_fate <- readr::read_csv("data/global-plastic-fate.csv")
-
-
 
 global_plastic_fate %>%
 group_by(Entity) %>%
@@ -29,8 +28,6 @@ ggplot(aes(x = Year, y = `Estimated historic plastic fate`, color= Entity)) +
   labs(x= "", y= "prozentualer Anteil", title= "Globaler Kunststoffabfall differnziert nach Entsorgungsart, 1980 bis 2015")+
   scale_colour_discrete(name= "Entsorgungsart", breaks=c("Discarded", "Incinerated", "Recycled"),labels= c("Entsorgung (auf Mülldeponien)", "Verbrennung", "Recyceln"))+
   theme_minimal_hgrid(12)
- 
- 
-
 ```
+
 
