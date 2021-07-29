@@ -1,7 +1,9 @@
+---
 name: "plottys_website"
 title: "Unsere Webseite"
 description: |
   Unsere Webseite
+---
 output_dir: "_site"
 navbar:
   search: TRUE

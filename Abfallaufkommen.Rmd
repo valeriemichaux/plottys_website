@@ -10,19 +10,28 @@ output: html_document
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
+library(readxl)
+
+Abfallaufkommen <- read_excel("data/Abfallaufkommen_Plastik.xlsx")
+View(Abfallaufkommen)
 ```
 
 #Umbenennung
 ```{r setup, include=FALSE}
 
-Abfallaufkommen_Plastik <- Abfallaufkommen_Plastik %>%
-                      rename(Land    = 'TIME')
-
-
+Abfallaufkommen <- Abfallaufkommen %>%
+                      rename(Land = 'TIME')
 ```
 
 ```{r}
-  Jahre <- c("2004", "2006", "2008", "2010", "2012", "2014", "2016", "2018")
-  
+Jahre <- c("2004", "2006", "2008", "2010", "2012", "2014", "2016", "2018")
+
+Abfallaufkommen_DE <- Abfallaufkommen %>%
+  filter(Land ==  c("Germany (until 1990 former territory of the FRG)")) 
+
+ggplot(Abfallaufkommen_DE) +
+  geom_bar(aes(x=Land), na.rm = TRUE) 
+
 ```
+
 
